@@ -6,6 +6,7 @@ var api = express.Router();
 var StrobellController = require('../controllers/strobell');
 var md_auth = require('../middlewares/authenticated');
 
-api.post('/strobell', md_auth.ensureAuth, StrobellController.saveStrobell);
+api.post('/addstrobell', md_auth.ensureAuth, StrobellController.saveStrobell);
+api.get('/getstrobell', StrobellController.getStrobell);
 
 module.exports = api;

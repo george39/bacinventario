@@ -33,9 +33,8 @@ app.get('/todo/:busqueda', (req, res, nest) => {
             buscarWarehouse2(busqueda, regex.registros),
             buscarTerminado(busqueda, regex.registros),
             buscarVulcanizado(busqueda, regex.registros),
-            buscarReproceso(busqueda, regex.registros),
-            buscarInjection2(busqueda, regex.registros),
-            buscarCementado(busqueda, regex.registros)
+            buscarReproceso(busqueda, regex.registros)
+
 
 
         ])
@@ -46,15 +45,14 @@ app.get('/todo/:busqueda', (req, res, nest) => {
                 guarnecidaInterna: respuestas[1],
                 guarnecidaExterna: respuestas[2],
                 warehouse1: respuestas[3],
-                warehouse2: respuestas[4],
-                ojaleteado: respuestas[5],
+                ojaleteado: respuestas[4],
+                strobell: respuestas[5],
                 injection1: respuestas[6],
-                injection2: respuestas[7],
-                cementado: respuestas[8],
-                strobell: respuestas[9],
-                termination: respuestas[10],
-                reproceso: respuestas[11],
-                vulcanizado: respuestas[12],
+                warehouse2: respuestas[7],
+                termination: respuestas[8],
+                vulcanizado: respuestas[9],
+                reproceso: respuestas[10],
+
             });
 
         });
@@ -103,29 +101,6 @@ function buscarInjection1(busqueda, regex) {
 }
 
 
-function buscarInjection2(busqueda, regex) {
-    return new Promise((resolve, reject) => {
-        Injection2.find({ reference: regex }, (err, injection2) => {
-            if (err) {
-                reject('Error al cargar Injeccion2', err);
-            } else {
-                resolve(injection2)
-            }
-        });
-    });
-}
-
-function buscarCementado(busqueda, regex) {
-    return new Promise((resolve, reject) => {
-        Cementado.find({ reference: regex }, (err, cementado) => {
-            if (err) {
-                reject('Error al cargar Cementado', err);
-            } else {
-                resolve(cementado)
-            }
-        });
-    });
-}
 
 
 function buscarTroquelado(busqueda, regex) {
@@ -259,17 +234,13 @@ app.get('/coleccion/:tabla/:busqueda', (req, res) => {
         case 'warehouse2':
             promesa = guscarWarehouse2(busqueda, regex)
             break;
-        case 'cementado':
-            promesa = guscarCementado(busqueda, regex)
-            break;
+
 
         case 'injection1':
             promesa = buscarInjection1(busqueda, regex)
             break;
 
-        case 'injection2':
-            promesa = buscarInjection2(busqueda, regex)
-            break;
+
 
         case 'ojaleteado':
             promesa = buscarOjaleteado(busqueda, regex)

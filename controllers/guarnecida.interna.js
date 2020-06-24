@@ -43,35 +43,47 @@ function saveGuarnecidaInterna(request, response) {
 }
 
 
+
+
+
+
 function deleteItemGuarnecida(request, response) {
-    var guarnecidaId = request.params.id;
-    var guarnecidaCode = request.params.registros;
-    var update = request.body;
-    var s = GuarnecidaInterna.name;
-    console.log(s);
 
-    GuarnecidaInterna.findOneAndUpdate(guarnecidaId, update, { 'new': true }, (error, itemRemoved) => {
+    var guarnecidaInterna = request.params.id;
+    var war = request.params;
+    var update = request.body._id;
+    var codigo = request.body.code;
+    var idGuarnecida = request.body.id;
 
-        if (error) {
-            response.status(500).send({
-                message: 'Error en la peticion'
+
+    GuarnecidaInterna.findByIdAndUpdate(update, { "$pull": { "registros": { "code": codigo } } }, { safe: true, multi: true }, (err, guarnecida) => {
+
+        if (err) {
+            return response.status(500).json({
+                ok: false,
+                mensaje: 'Error al buscar usuario',
+                errors: err
             });
         } else {
-            if (!itemRemoved) {
-                response.status(404).send({
-                    message: 'La tarea no existe',
+            if (!guarnecida) {
+                return response.status(404).json({
+                    ok: false,
+                    mensaje: "el codigo no existe"
                 });
-                console.log(itemRemoved);
             } else {
-                response.status(200).send({
-                    troquelado: itemRemoved
 
+                response.status(200).json({
+                    ok: true,
+                    guarnecidaInterna: guarnecida
                 });
             }
         }
 
     });
+
 }
+
+
 
 function getGuarnecidas(request, response) {
     GuarnecidaInterna.find({}).populate({ path: 'user_id' }).exec((error, guarnecidaInterna) => {
@@ -97,5 +109,6 @@ function getGuarnecidas(request, response) {
 module.exports = {
     saveGuarnecidaInterna,
     deleteItemGuarnecida,
-    getGuarnecidas
+    getGuarnecidas,
+
 }
